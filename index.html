@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: black;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== COVER ===== */
+    .cover {
+      position: fixed;
+      inset: 0;
+      background: url('cover.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 1;
+      transition: opacity 1.2s ease;
+    }
+
+    .cover.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .box {
+      background: rgba(0,0,0,0.65);
+      padding: 28px;
+      border-radius: 16px;
+      text-align: center;
+      color: white;
+      width: 90%;
+      max-width: 340px;
+      animation: fadeUp 1.2s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .guest {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 15px 0 25px;
+    }
+
+    button {
+      background: #d4af37;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* ===== VIDEO ===== */
+    .video {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 9 / 16;
+      height: 100vh;
+      margin: auto;
+      background: black;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <div class="cover" id="cover">
+    <div class="box">
+      <div>Kepada Yth</div>
+      <div class="guest" id="guest">Tamu Undangan</div>
+      <button onclick="openInvite()">Buka Undangan</button>
+    </div>
+  </div>
+
+  <!-- VIDEO (SUDAH ADA MUSIK DI DALAM VIDEO) -->
+  <div class="video">
+    <video id="video" muted playsinline preload="auto">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <script>
+    // Nama tamu dari URL
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get('to');
+    if (guest) {
+      document.getElementById('guest').innerText =
+        decodeURIComponent(guest.replace(/\+/g, ' '));
+    }
+
+    function openInvite() {
+      const cover = document.getElementById('cover');
+      const video = document.getElementById('video');
+
+      // Hilangkan cover halus
+      cover.classList.add('hide');
+
+      // PLAY + AKTIFKAN SUARA
+      video.muted = false;
+      video.play();
+
+      setTimeout(() => {
+        cover.style.display = 'none';
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
